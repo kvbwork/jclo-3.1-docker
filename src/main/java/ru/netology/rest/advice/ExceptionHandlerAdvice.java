@@ -6,6 +6,8 @@ import org.springframework.web.bind.annotation.RestControllerAdvice;
 import ru.netology.rest.exception.InvalidCredentials;
 import ru.netology.rest.exception.UnauthorizedUser;
 
+import javax.validation.ConstraintViolationException;
+
 import static org.springframework.http.HttpStatus.BAD_REQUEST;
 import static org.springframework.http.HttpStatus.UNAUTHORIZED;
 
@@ -21,6 +23,11 @@ public class ExceptionHandlerAdvice {
     public ResponseEntity<String> unauthorizedUserHandler(UnauthorizedUser e) {
         System.out.println("UnauthorizedUser: " + e.getMessage());
         return new ResponseEntity<>(e.getMessage(), UNAUTHORIZED);
+    }
+
+    @ExceptionHandler(ConstraintViolationException.class)
+    public ResponseEntity<String> constraintViolationHandler(ConstraintViolationException e) {
+        return new ResponseEntity<>(e.getMessage(), BAD_REQUEST);
     }
 
 }
